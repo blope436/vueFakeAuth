@@ -1,7 +1,13 @@
+<script setup>
+import useAuth from "../composable/useAuth";
+const { isAuthenticated, user } = useAuth;
+</script>
 <template>
 <div class="flex items-center text-yellow-800 text-5xl text-center bg-purple-200">
 <img class="w-40" src="/src/assets/homeTop.png" alt="Home Image"/>
 <h1>Home</h1>
+<h2 v-if="!isAuthenticated">, Welcome</h2>
+<h2 v-else class="text-5xl font-extralight">, Welcome {{user}}</h2>
 </div>
 <div class="container mx-auto text-yellow-300">
 <div ><img class="px-80 py-3" src="/src/assets/WelcomeIndex.png" alt="Welcome IMG"></div>

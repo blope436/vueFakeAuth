@@ -1,12 +1,15 @@
-import {createRouter, createWebHistory} from "vue-router";
-import Index from './components/pages/index.vue'
-import About from './components/pages/about.vue'
-import Items from './components/pages/ItemList.vue'
-import Contact from './components/pages/contact.vue'
-import PageNotFound from './components/pages/404.vue'
-import Secret from './components/pages/secret.vue'
-import Login from './components/pages/login.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import useAuth from "./composable/useAuth";
 
+import Index from './pages/index.vue'
+import About from './pages/about.vue'
+import Items from './pages/ItemList.vue'
+import Contact from './pages/contact.vue'
+import PageNotFound from './pages/404.vue'
+import Secret from './pages/secret.vue'
+import Login from './pages/login.vue'
+
+const { isAuthenticated } = useAuth;
 
 const routes = [{
     path: "/",
@@ -29,19 +32,26 @@ const routes = [{
     component: Contact,
 },
 {
-    path: "/:pathMatch(.*)*",
-    name: "PageNotFound",
-    component: PageNotFound,
+    path: "/login:",
+    name: "Login",
+    component: Login,
 },
 {
     path: "/secret:",
     name: "Secret",
     component: Secret,
+    beforeEnter: (to, from, next) => {
+        console.log(isAuthenticated);
+        if (!isAuthenticated.value) {
+          next("/login");
+        }
+        next();
+      },
 },
 {
-    path: "/login:",
-    name: "Login",
-    component: Login,
+    path: "/:pathMatch(.*)*",
+    name: "PageNotFound",
+    component: PageNotFound,
 },
 ];
 
